@@ -18,7 +18,7 @@ const frameMetadata = getFrameMetadata({
     },
   ],
   image: {
-    src: `${NEXT_PUBLIC_URL}/park-3.png`,
+    src: `https://firebasestorage.googleapis.com/v0/b/bounties-test-48451.appspot.com/o/profilePictures%2F0x21164822CfF42F36bF3297493567f07022F8A09a?alt=media&token=93929247-0da2-497f-b958-d950a4b85da7`,
     aspectRatio: '1:1',
   },
   input: {
