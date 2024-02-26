@@ -29,7 +29,7 @@ async function fetchUsers() {
   try {
     const response = await fetch('https://collab.song.camp/api/getAllUsers');
     const data = await response.json();
-    console.log('External API Response:', data);
+
     return data;
   } catch (error) {
     console.error('Error fetching data from external API:', error);
@@ -37,6 +37,9 @@ async function fetchUsers() {
 }
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
+  const url = new URL(req.url);
+  const state = url.searchParams.get('state');
+
   let accountAddress: string | undefined = '';
   let text: string | undefined = '';
   // let userObjectArray: Array<object> = []
@@ -48,6 +51,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
   console.log('message:', message);
   console.log('body:', body);
+  console.log('state:', state)
 
   if (isValid) {
     accountAddress = message.interactor.verified_accounts[0];
@@ -55,28 +59,27 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   if (message?.button === 1) {
     const data = await fetchUsers();
-    const userIndex = Math.floor(Math.random() * data.length)
+    const userIndex = Math.floor(Math.random() * data.length);
     text = `${data[userIndex].data.username}`;
     const profilePic = await getImageURL(data[userIndex].data.walletAddress);
     console.log(text);
     return new NextResponse(
       getFrameHtmlResponse({
         buttons: [
-
           {
             label: 'Next',
           },
           {
             label: `${text}`,
             action: 'post_redirect',
-
           },
         ],
         image: {
           src: profilePic,
           aspectRatio: '1:1',
         },
-        postUrl: `${NEXT_PUBLIC_URL}api/frame`,
+        postUrl: `${NEXT_PUBLIC_URL}api/frame?state=${userIndex}`,
+        
       }),
     );
   }
@@ -84,8 +87,9 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   if (message?.button === 2) {
     const data = await fetchUsers();
     console.log(text);
+    if(state != null)
     return NextResponse.redirect(
-      `https://collab.song.camp/profileview/${data[3].data.walletAddress}`,
+      `https://collab.song.camp/profileview/${data[state].data.walletAddress}`,
       { status: 302 },
     );
   }
