@@ -4,23 +4,23 @@ import { NEXT_PUBLIC_URL } from './config';
 
 const frameMetadata = getFrameMetadata({
   buttons: [
-    {
-      label: 'Previous',
-    },
-    {
-      label: 'Next',
-    },
+    // {
+    //   label: 'Previous',
+    // },
+    // {
+    //   label: 'Next',
+    // },
     {
       label: 'View Profile ->',
     },
   ],
   image: {
-    src: `${NEXT_PUBLIC_URL}/park-3.png`,
-    aspectRatio: '1:1',
+    src: `${NEXT_PUBLIC_URL}/SC.png`,
+    aspectRatio: '1.91:1',
   },
-  input: {
-    text: 'Tell me a boat story',
-  },
+  // input: {
+  //   text: 'Tell me a boat story',
+  // },
   postUrl: `${NEXT_PUBLIC_URL}api/frame`,
 });
 
