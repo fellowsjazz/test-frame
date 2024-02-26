@@ -29,7 +29,7 @@ async function fetchUsers() {
   try {
     const response = await fetch('https://collab.song.camp/api/getAllUsers');
     const data = await response.json();
-
+    console.log('api response: ', data);
     return data;
   } catch (error) {
     console.error('Error fetching data from external API:', error);
@@ -51,7 +51,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   });
   console.log('message:', message);
   console.log('body:', body);
-  console.log('state:', state)
+  console.log('state:', state);
 
   if (isValid) {
     accountAddress = message.interactor.verified_accounts[0];
@@ -73,13 +73,20 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
             label: `${text}`,
             action: 'post_redirect',
           },
+          {
+            label: `Music`,
+            action: 'post_redirect',
+          },
+          {
+            label: `Socials`,
+            action: 'post_redirect',
+          },
         ],
         image: {
           src: profilePic,
           aspectRatio: '1:1',
         },
         postUrl: `${NEXT_PUBLIC_URL}api/frame?state=${userIndex}`,
-        
       }),
     );
   }
@@ -87,18 +94,21 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   if (message?.button === 2) {
     const data = await fetchUsers();
     console.log(text);
-    if(state != null)
-    return NextResponse.redirect(
-      `https://collab.song.camp/profileview/${data[state].data.walletAddress}`,
-      { status: 302 },
-    );
+    if (state != null)
+      return NextResponse.redirect(
+        `https://collab.song.camp/profileview/${data[state].data.walletAddress}`,
+        { status: 302 },
+      );
   }
 
   if (message?.button === 3) {
-    return NextResponse.redirect(
-      'https://www.google.com/search?q=cute+dog+pictures&tbm=isch&source=lnms',
-      { status: 302 },
-    );
+    const data = await fetchUsers();
+    if (state != null) return NextResponse.redirect(data[state].data.musicLink, { status: 302 });
+  }
+
+  if (message?.button === 4) {
+    const data = await fetchUsers();
+    if (state != null) return NextResponse.redirect(data[state].data.socialLink, { status: 302 });
   }
 
   return new NextResponse(
