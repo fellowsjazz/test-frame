@@ -76,7 +76,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           src: profilePic,
           aspectRatio: '1:1',
         },
-        postUrl: `http://localhost:3000/api/frame`,
+        postUrl: `${NEXT_PUBLIC_URL}api/frame`,
       }),
     );
   }
@@ -112,7 +112,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       image: {
         src: `${NEXT_PUBLIC_URL}/park-1.png`,
       },
-      postUrl: `http://localhost:3000/api/frame`,
+      postUrl: `${NEXT_PUBLIC_URL}api/frame`,
     }),
   );
 }
