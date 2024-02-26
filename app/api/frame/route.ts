@@ -55,21 +55,21 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   if (message?.button === 1) {
     const data = await fetchUsers();
-    text = `🌟${data[3].data.username}🌟`;
-    const profilePic = await getImageURL(data[3].data.walletAddress);
+    const userIndex = Math.floor(Math.random() * data.length)
+    text = `${data[userIndex].data.username}`;
+    const profilePic = await getImageURL(data[userIndex].data.walletAddress);
     console.log(text);
     return new NextResponse(
       getFrameHtmlResponse({
         buttons: [
-          {
-            label: 'Previous',
-          },
+
           {
             label: 'Next',
           },
           {
-            label: `View ${text}'s Profile`,
-            action: 'post_redirect'
+            label: `${text}`,
+            action: 'post_redirect',
+
           },
         ],
         image: {
@@ -82,11 +82,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   }
 
   if (message?.button === 2) {
-    text = 'you clicked the second button';
-    console.log(text);
-  }
-
-  if (message?.button === 3) {
     const data = await fetchUsers();
     console.log(text);
     return NextResponse.redirect(
@@ -110,7 +105,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         },
       ],
       image: {
-        src: `${NEXT_PUBLIC_URL}/park-1.png`,
+        src: `${NEXT_PUBLIC_URL}park-1.png`,
       },
       postUrl: `${NEXT_PUBLIC_URL}api/frame`,
     }),

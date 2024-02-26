@@ -11,7 +11,7 @@ const frameMetadata = getFrameMetadata({
     //   label: 'Next',
     // },
     {
-      label: 'View Profile ->',
+      label: 'View a Profile ->',
     },
   ],
   image: {
